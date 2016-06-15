@@ -1,0 +1,1 @@
+{"head":"","body":"","js":"\nTemplate.__checkName(\"accessDenied\");\nTemplate[\"accessDenied\"] = new Template(\"Template.accessDenied\", (function() {\n  var view = this;\n  return HTML.Raw('<div class=\"access-denied jumbotron\">\\n        <h2>Access Denied</h2>\\n        <p>You can\\'t get here! Please log in.</p>\\n    </div>');\n}));\n","bodyAttrs":{}}

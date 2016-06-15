@@ -1,0 +1,1 @@
+{"head":"","body":"","js":"\nTemplate.__checkName(\"postPage\");\nTemplate[\"postPage\"] = new Template(\"Template.postPage\", (function() {\n  var view = this;\n  return Spacebars.include(view.lookupTemplate(\"postItem\"));\n}));\n","bodyAttrs":{}}

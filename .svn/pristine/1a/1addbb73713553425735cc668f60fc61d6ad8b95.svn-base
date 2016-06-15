@@ -1,0 +1,1461 @@
+var require = meteorInstall({"client":{"templates":{"application":{"template.layout.js":function(){
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                   //
+// client/templates/application/template.layout.js                                                                   //
+//                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                     //
+                                                                                                                     // 1
+Template.__checkName("layout");                                                                                      // 2
+Template["layout"] = new Template("Template.layout", (function() {                                                   // 3
+  var view = this;                                                                                                   // 4
+  return HTML.DIV({                                                                                                  // 5
+    "class": "container"                                                                                             // 6
+  }, "\n\n        ", Spacebars.include(view.lookupTemplate("header")), "\n        ", Spacebars.include(view.lookupTemplate("errors")), "\n        ", HTML.DIV({
+    id: "main",                                                                                                      // 8
+    "class": "row-fluid"                                                                                             // 9
+  }, "\n            ", Spacebars.include(view.lookupTemplate("yield")), "\n        "), "\n    ");                    // 10
+}));                                                                                                                 // 11
+                                                                                                                     // 12
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+},"template.not_found.js":function(){
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                   //
+// client/templates/application/template.not_found.js                                                                //
+//                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                     //
+                                                                                                                     // 1
+Template.__checkName("notFound");                                                                                    // 2
+Template["notFound"] = new Template("Template.notFound", (function() {                                               // 3
+  var view = this;                                                                                                   // 4
+  return HTML.Raw('<div class="not-found jumbotron">\n        <h2>404</h2>\n        <p>Sorry, we couldn\'t find a page at this address. 抱歉，我们无法找到该页面。</p>\n    </div>');
+}));                                                                                                                 // 6
+                                                                                                                     // 7
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+},"layout.js":function(){
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                   //
+// client/templates/application/layout.js                                                                            //
+//                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                     //
+/**                                                                                                                  //
+ * Created by Administrator on 2016-06-10.                                                                           //
+ */                                                                                                                  //
+Template.layout.onRendered(function () {                                                                             // 4
+    this.find('#main')._uihooks = {                                                                                  // 5
+        insertElement: function () {                                                                                 // 6
+            function insertElement(node, next) {                                                                     // 6
+                $(node).hide().insertBefore(next).fadeIn();                                                          // 7
+            }                                                                                                        //
+                                                                                                                     //
+            return insertElement;                                                                                    //
+        }(),                                                                                                         //
+        removeElement: function () {                                                                                 // 12
+            function removeElement(node) {                                                                           // 12
+                $(node).fadeOut(function () {                                                                        // 13
+                    $(this).remove();                                                                                // 14
+                });                                                                                                  //
+            }                                                                                                        //
+                                                                                                                     //
+            return removeElement;                                                                                    //
+        }()                                                                                                          //
+    };                                                                                                               //
+});                                                                                                                  //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+}},"comments":{"template.comment_item.js":function(){
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                   //
+// client/templates/comments/template.comment_item.js                                                                //
+//                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                     //
+                                                                                                                     // 1
+Template.__checkName("commentItem");                                                                                 // 2
+Template["commentItem"] = new Template("Template.commentItem", (function() {                                         // 3
+  var view = this;                                                                                                   // 4
+  return HTML.LI("\n        ", HTML.H4("\n            ", HTML.SPAN({                                                 // 5
+    "class": "author"                                                                                                // 6
+  }, Blaze.View("lookup:author", function() {                                                                        // 7
+    return Spacebars.mustache(view.lookup("author"));                                                                // 8
+  })), "\n            ", HTML.SPAN({                                                                                 // 9
+    "class": "date"                                                                                                  // 10
+  }, "on ", Blaze.View("lookup:submittedText", function() {                                                          // 11
+    return Spacebars.mustache(view.lookup("submittedText"));                                                         // 12
+  })), "\n        "), "\n        ", HTML.P(Blaze.View("lookup:body", function() {                                    // 13
+    return Spacebars.mustache(view.lookup("body"));                                                                  // 14
+  })), "\n    ");                                                                                                    // 15
+}));                                                                                                                 // 16
+                                                                                                                     // 17
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+},"template.comment_submit.js":function(){
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                   //
+// client/templates/comments/template.comment_submit.js                                                              //
+//                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                     //
+                                                                                                                     // 1
+Template.__checkName("commentSubmit");                                                                               // 2
+Template["commentSubmit"] = new Template("Template.commentSubmit", (function() {                                     // 3
+  var view = this;                                                                                                   // 4
+  return HTML.FORM({                                                                                                 // 5
+    name: "comment",                                                                                                 // 6
+    "class": "comment-form form"                                                                                     // 7
+  }, "\n        ", HTML.DIV({                                                                                        // 8
+    "class": function() {                                                                                            // 9
+      return [ "form-group ", Spacebars.mustache(view.lookup("errorClass"), "body") ];                               // 10
+    }                                                                                                                // 11
+  }, "\n            ", HTML.DIV({                                                                                    // 12
+    "class": "controls"                                                                                              // 13
+  }, "\n                ", HTML.Raw('<label for="body">Comment on this post</label>'), "\n                ", HTML.TEXTAREA({
+    name: "body",                                                                                                    // 15
+    id: "body",                                                                                                      // 16
+    "class": "form-control",                                                                                         // 17
+    rows: "3"                                                                                                        // 18
+  }), "\n                ", HTML.SPAN({                                                                              // 19
+    "class": "help-block"                                                                                            // 20
+  }, Blaze.View("lookup:errorMessage", function() {                                                                  // 21
+    return Spacebars.mustache(view.lookup("errorMessage"), "body");                                                  // 22
+  })), "\n            "), "\n        "), HTML.Raw('\n        <button type="submit" class="btn btn-primary">Add Comment</button>\n    '));
+}));                                                                                                                 // 24
+                                                                                                                     // 25
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+},"comment_item.js":function(){
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                   //
+// client/templates/comments/comment_item.js                                                                         //
+//                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                     //
+/**                                                                                                                  //
+ * Created by Administrator on 2016-06-12.                                                                           //
+ */                                                                                                                  //
+Template.commentItem.helpers({                                                                                       // 4
+    submittedText: function () {                                                                                     // 5
+        function submittedText() {                                                                                   // 5
+            return this.submitted.toString();                                                                        // 6
+        }                                                                                                            //
+                                                                                                                     //
+        return submittedText;                                                                                        //
+    }()                                                                                                              //
+});                                                                                                                  //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+},"comment_submit.js":function(){
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                   //
+// client/templates/comments/comment_submit.js                                                                       //
+//                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                     //
+/**                                                                                                                  //
+ * Created by Administrator on 2016-06-12.                                                                           //
+ */                                                                                                                  //
+Template.commentSubmit.onCreated(function () {                                                                       // 4
+    Session.set('commentSubmitErrors', {});                                                                          // 5
+});                                                                                                                  //
+                                                                                                                     //
+Template.commentSubmit.helpers({                                                                                     // 8
+    errorMessage: function () {                                                                                      // 9
+        function errorMessage(field) {                                                                               // 9
+            return Session.get('commentSubmitErrors')[field];                                                        // 10
+        }                                                                                                            //
+                                                                                                                     //
+        return errorMessage;                                                                                         //
+    }(),                                                                                                             //
+    errorClass: function () {                                                                                        // 12
+        function errorClass(field) {                                                                                 // 12
+            return !!Session.get('commentSubmitErrors')[field] ? 'has-error' : '';                                   // 13
+        }                                                                                                            //
+                                                                                                                     //
+        return errorClass;                                                                                           //
+    }()                                                                                                              //
+});                                                                                                                  //
+                                                                                                                     //
+Template.commentSubmit.events({                                                                                      // 17
+    'submit form': function () {                                                                                     // 18
+        function submitForm(e, template) {                                                                           // 18
+            e.preventDefault();                                                                                      // 19
+                                                                                                                     //
+            var $body = $(e.target).find('[name=body]');                                                             // 21
+            var comment = {                                                                                          // 22
+                body: $body.val(),                                                                                   // 23
+                postId: template.data._id                                                                            // 24
+            };                                                                                                       //
+                                                                                                                     //
+            var errors = {};                                                                                         // 27
+            if (!comment.body) {                                                                                     // 28
+                errors.body = "Please write some content";                                                           // 29
+                return Session.set('commentSubmitErrors', errors);                                                   // 30
+            }                                                                                                        //
+                                                                                                                     //
+            Meteor.call('commentInsert', comment, function (error, commentId) {                                      // 33
+                if (error) {                                                                                         // 34
+                    throwError(error.reason);                                                                        // 35
+                } else {                                                                                             //
+                    $body.val('');                                                                                   // 37
+                }                                                                                                    //
+            });                                                                                                      //
+        }                                                                                                            //
+                                                                                                                     //
+        return submitForm;                                                                                           //
+    }()                                                                                                              //
+});                                                                                                                  //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+}},"includes":{"template.access_denied.js":function(){
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                   //
+// client/templates/includes/template.access_denied.js                                                               //
+//                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                     //
+                                                                                                                     // 1
+Template.__checkName("accessDenied");                                                                                // 2
+Template["accessDenied"] = new Template("Template.accessDenied", (function() {                                       // 3
+  var view = this;                                                                                                   // 4
+  return HTML.Raw('<div class="access-denied jumbotron">\n        <h2>Access Denied</h2>\n        <p>You can\'t get here! Please log in.</p>\n    </div>');
+}));                                                                                                                 // 6
+                                                                                                                     // 7
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+},"template.errors.js":function(){
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                   //
+// client/templates/includes/template.errors.js                                                                      //
+//                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                     //
+                                                                                                                     // 1
+Template.__checkName("errors");                                                                                      // 2
+Template["errors"] = new Template("Template.errors", (function() {                                                   // 3
+  var view = this;                                                                                                   // 4
+  return HTML.DIV({                                                                                                  // 5
+    "class": "errors"                                                                                                // 6
+  }, "\n        ", Blaze.Each(function() {                                                                           // 7
+    return Spacebars.call(view.lookup("errors"));                                                                    // 8
+  }, function() {                                                                                                    // 9
+    return [ "\n            ", Spacebars.include(view.lookupTemplate("error")), "\n        " ];                      // 10
+  }), "\n    ");                                                                                                     // 11
+}));                                                                                                                 // 12
+                                                                                                                     // 13
+Template.__checkName("error");                                                                                       // 14
+Template["error"] = new Template("Template.error", (function() {                                                     // 15
+  var view = this;                                                                                                   // 16
+  return HTML.DIV({                                                                                                  // 17
+    "class": "alert alert-danger",                                                                                   // 18
+    role: "alert"                                                                                                    // 19
+  }, HTML.Raw('\n        <button type="button" class="close" data-dismiss="alert">&times;</button>\n        '), Blaze.View("lookup:message", function() {
+    return Spacebars.mustache(view.lookup("message"));                                                               // 21
+  }), "\n    ");                                                                                                     // 22
+}));                                                                                                                 // 23
+                                                                                                                     // 24
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+},"template.header.js":function(){
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                   //
+// client/templates/includes/template.header.js                                                                      //
+//                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                     //
+                                                                                                                     // 1
+Template.__checkName("header");                                                                                      // 2
+Template["header"] = new Template("Template.header", (function() {                                                   // 3
+  var view = this;                                                                                                   // 4
+  return HTML.NAV({                                                                                                  // 5
+    "class": "navbar navbar-default",                                                                                // 6
+    role: "navigation"                                                                                               // 7
+  }, "\n        ", HTML.DIV({                                                                                        // 8
+    "class": "container-fluid"                                                                                       // 9
+  }, "\n            ", HTML.DIV({                                                                                    // 10
+    "class": "navbar-header"                                                                                         // 11
+  }, "\n                ", HTML.Raw('<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navigation">\n                    <span class="sr-only">Toggle navigation</span>\n                    <span class="icon-bar"></span>\n                    <span class="icon-bar"></span>\n                    <span class="icon-bar"></span>\n                </button>'), "\n                ", HTML.A({
+    "class": "navbar-brand",                                                                                         // 13
+    href: function() {                                                                                               // 14
+      return Spacebars.mustache(view.lookup("pathFor"), "home");                                                     // 15
+    }                                                                                                                // 16
+  }, "Microscope"), "\n            "), "\n            ", HTML.DIV({                                                  // 17
+    "class": "collapse navbar-collapse",                                                                             // 18
+    id: "navigation"                                                                                                 // 19
+  }, "\n                ", HTML.UL({                                                                                 // 20
+    "class": "nav navbar-nav"                                                                                        // 21
+  }, "\n                    ", HTML.LI({                                                                             // 22
+    "class": function() {                                                                                            // 23
+      return Spacebars.mustache(view.lookup("activeRouteClass"), "home", "newPosts");                                // 24
+    }                                                                                                                // 25
+  }, "\n                        ", HTML.A({                                                                          // 26
+    href: function() {                                                                                               // 27
+      return Spacebars.mustache(view.lookup("pathFor"), "newPosts");                                                 // 28
+    }                                                                                                                // 29
+  }, "New"), "\n                    "), "\n                    ", HTML.LI({                                          // 30
+    "class": function() {                                                                                            // 31
+      return Spacebars.mustache(view.lookup("activeRouteClass"), "bestPosts");                                       // 32
+    }                                                                                                                // 33
+  }, "\n                        ", HTML.A({                                                                          // 34
+    href: function() {                                                                                               // 35
+      return Spacebars.mustache(view.lookup("pathFor"), "bestPosts");                                                // 36
+    }                                                                                                                // 37
+  }, "Best"), "\n                    "), "\n                    ", Blaze.If(function() {                             // 38
+    return Spacebars.call(view.lookup("currentUser"));                                                               // 39
+  }, function() {                                                                                                    // 40
+    return [ "\n                        ", HTML.LI({                                                                 // 41
+      "class": function() {                                                                                          // 42
+        return Spacebars.mustache(view.lookup("activeRouteClass"), "postSubmit");                                    // 43
+      }                                                                                                              // 44
+    }, "\n                            ", HTML.A({                                                                    // 45
+      href: function() {                                                                                             // 46
+        return Spacebars.mustache(view.lookup("pathFor"), "postSubmit");                                             // 47
+      }                                                                                                              // 48
+    }, "Submit Post"), "\n                        "), "\n                        ", HTML.LI({                        // 49
+      "class": "dropdown"                                                                                            // 50
+    }, "\n                            ", Spacebars.include(view.lookupTemplate("notifications")), "\n                        "), "\n                    " ];
+  }), "\n                "), "\n                ", HTML.UL({                                                         // 52
+    "class": "nav navbar-nav navbar-right"                                                                           // 53
+  }, "\n                    ", Spacebars.include(view.lookupTemplate("loginButtons")), "\n                "), "\n            "), "\n        "), "\n    ");
+}));                                                                                                                 // 55
+                                                                                                                     // 56
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+},"template.loading.js":function(){
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                   //
+// client/templates/includes/template.loading.js                                                                     //
+//                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                     //
+                                                                                                                     // 1
+Template.__checkName("loading");                                                                                     // 2
+Template["loading"] = new Template("Template.loading", (function() {                                                 // 3
+  var view = this;                                                                                                   // 4
+  return "loading````";                                                                                              // 5
+}));                                                                                                                 // 6
+                                                                                                                     // 7
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+},"errors.js":function(){
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                   //
+// client/templates/includes/errors.js                                                                               //
+//                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                     //
+/**                                                                                                                  //
+ * Created by Administrator on 2016-06-12.                                                                           //
+ */                                                                                                                  //
+Template.errors.helpers({                                                                                            // 4
+    errors: function () {                                                                                            // 5
+        function errors() {                                                                                          // 5
+            return Errors.find();                                                                                    // 6
+        }                                                                                                            //
+                                                                                                                     //
+        return errors;                                                                                               //
+    }()                                                                                                              //
+});                                                                                                                  //
+Template.error.onRendered(function () {                                                                              // 9
+    var error = this.data;                                                                                           // 10
+    Meteor.setTimeout(function () {                                                                                  // 11
+        Errors.remove(error._id);                                                                                    // 12
+    }, 3000);                                                                                                        //
+});                                                                                                                  //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+},"header.js":function(){
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                   //
+// client/templates/includes/header.js                                                                               //
+//                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                     //
+/**                                                                                                                  //
+ * Created by Administrator on 2016-06-12.                                                                           //
+ */                                                                                                                  //
+Template.header.helpers({                                                                                            // 4
+    activeRouteClass: function () {                                                                                  // 5
+        function activeRouteClass() /* route names */{                                                               // 5
+            var args = Array.prototype.slice.call(arguments, 0);                                                     // 6
+            args.pop();                                                                                              // 7
+                                                                                                                     //
+            var active = _.any(args, function (name) {                                                               // 9
+                return Router.current() && Router.current().route.getName() === name;                                // 10
+            });                                                                                                      //
+                                                                                                                     //
+            return active && 'active';                                                                               // 13
+        }                                                                                                            //
+                                                                                                                     //
+        return activeRouteClass;                                                                                     //
+    }()                                                                                                              //
+});                                                                                                                  //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+}},"notifications":{"template.notifications.js":function(){
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                   //
+// client/templates/notifications/template.notifications.js                                                          //
+//                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                     //
+                                                                                                                     // 1
+Template.__checkName("notifications");                                                                               // 2
+Template["notifications"] = new Template("Template.notifications", (function() {                                     // 3
+  var view = this;                                                                                                   // 4
+  return [ HTML.A({                                                                                                  // 5
+    href: "#",                                                                                                       // 6
+    "class": "dropdown-toggle",                                                                                      // 7
+    "data-toggle": "dropdown"                                                                                        // 8
+  }, "\n        Notifications\n        ", Blaze.If(function() {                                                      // 9
+    return Spacebars.call(view.lookup("notificationCount"));                                                         // 10
+  }, function() {                                                                                                    // 11
+    return [ "\n            ", HTML.SPAN({                                                                           // 12
+      "class": "badge badge-inverse"                                                                                 // 13
+    }, Blaze.View("lookup:notificationCount", function() {                                                           // 14
+      return Spacebars.mustache(view.lookup("notificationCount"));                                                   // 15
+    })), "\n        " ];                                                                                             // 16
+  }), "\n        ", HTML.Raw('<b class="caret"></b>'), "\n    "), "\n    ", HTML.UL({                                // 17
+    "class": "notification dropdown-menu"                                                                            // 18
+  }, "\n        ", Blaze.If(function() {                                                                             // 19
+    return Spacebars.call(view.lookup("notificationCount"));                                                         // 20
+  }, function() {                                                                                                    // 21
+    return [ "\n            ", Blaze.Each(function() {                                                               // 22
+      return Spacebars.call(view.lookup("notifications"));                                                           // 23
+    }, function() {                                                                                                  // 24
+      return [ "\n                ", Spacebars.include(view.lookupTemplate("notificationItem")), "\n            " ];
+    }), "\n        " ];                                                                                              // 26
+  }, function() {                                                                                                    // 27
+    return [ "\n            ", HTML.LI(HTML.SPAN("No Notifications")), "\n        " ];                               // 28
+  }), "\n    ") ];                                                                                                   // 29
+}));                                                                                                                 // 30
+                                                                                                                     // 31
+Template.__checkName("notificationItem");                                                                            // 32
+Template["notificationItem"] = new Template("Template.notificationItem", (function() {                               // 33
+  var view = this;                                                                                                   // 34
+  return HTML.LI("\n        ", HTML.A({                                                                              // 35
+    href: function() {                                                                                               // 36
+      return Spacebars.mustache(view.lookup("notificationPostPath"));                                                // 37
+    }                                                                                                                // 38
+  }, "\n            ", HTML.STRONG(Blaze.View("lookup:commenterName", function() {                                   // 39
+    return Spacebars.mustache(view.lookup("commenterName"));                                                         // 40
+  })), " commented on your post\n        "), "\n    ");                                                              // 41
+}));                                                                                                                 // 42
+                                                                                                                     // 43
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+},"notifications.js":function(){
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                   //
+// client/templates/notifications/notifications.js                                                                   //
+//                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                     //
+/**                                                                                                                  //
+ * Created by Administrator on 2016-06-12.                                                                           //
+ */                                                                                                                  //
+Template.notifications.helpers({                                                                                     // 4
+    notifications: function () {                                                                                     // 5
+        function notifications() {                                                                                   // 5
+            return Notifications.find({ userId: Meteor.userId(), read: false });                                     // 6
+        }                                                                                                            //
+                                                                                                                     //
+        return notifications;                                                                                        //
+    }(),                                                                                                             //
+    notificationCount: function () {                                                                                 // 8
+        function notificationCount() {                                                                               // 8
+            return Notifications.find({ userId: Meteor.userId(), read: false }).count();                             // 9
+        }                                                                                                            //
+                                                                                                                     //
+        return notificationCount;                                                                                    //
+    }()                                                                                                              //
+});                                                                                                                  //
+                                                                                                                     //
+Template.notificationItem.helpers({                                                                                  // 13
+    notificationPostPath: function () {                                                                              // 14
+        function notificationPostPath() {                                                                            // 14
+            return Router.routes.postPage.path({ _id: this.postId });                                                // 15
+        }                                                                                                            //
+                                                                                                                     //
+        return notificationPostPath;                                                                                 //
+    }()                                                                                                              //
+});                                                                                                                  //
+                                                                                                                     //
+Template.notificationItem.events({                                                                                   // 19
+    'click a': function () {                                                                                         // 20
+        function clickA() {                                                                                          // 20
+            Notifications.update(this._id, { $set: { read: true } });                                                // 21
+        }                                                                                                            //
+                                                                                                                     //
+        return clickA;                                                                                               //
+    }()                                                                                                              //
+});                                                                                                                  //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+}},"posts":{"template.post_edit.js":function(){
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                   //
+// client/templates/posts/template.post_edit.js                                                                      //
+//                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                     //
+                                                                                                                     // 1
+Template.__checkName("postEdit");                                                                                    // 2
+Template["postEdit"] = new Template("Template.postEdit", (function() {                                               // 3
+  var view = this;                                                                                                   // 4
+  return HTML.FORM({                                                                                                 // 5
+    "class": "main form"                                                                                             // 6
+  }, "\n        ", HTML.DIV({                                                                                        // 7
+    "class": function() {                                                                                            // 8
+      return [ "form-group ", Spacebars.mustache(view.lookup("errorClass"), "url") ];                                // 9
+    }                                                                                                                // 10
+  }, "\n            ", HTML.Raw('<label class="control-label" for="url">URL</label>'), "\n            ", HTML.DIV({  // 11
+    "class": "controls"                                                                                              // 12
+  }, "\n                ", HTML.INPUT({                                                                              // 13
+    name: "url",                                                                                                     // 14
+    id: "url",                                                                                                       // 15
+    type: "text",                                                                                                    // 16
+    value: function() {                                                                                              // 17
+      return Spacebars.mustache(view.lookup("url"));                                                                 // 18
+    },                                                                                                               // 19
+    placeholder: "Your URL",                                                                                         // 20
+    "class": "form-control"                                                                                          // 21
+  }), "\n                ", HTML.SPAN({                                                                              // 22
+    "class": "help-block"                                                                                            // 23
+  }, Blaze.View("lookup:errorMessage", function() {                                                                  // 24
+    return Spacebars.mustache(view.lookup("errorMessage"), "url");                                                   // 25
+  })), "\n            "), "\n        "), "\n        ", HTML.DIV({                                                    // 26
+    "class": function() {                                                                                            // 27
+      return [ "form-group ", Spacebars.mustache(view.lookup("errorClass"), "title") ];                              // 28
+    }                                                                                                                // 29
+  }, "\n            ", HTML.Raw('<label class="control-label" for="title">Title</label>'), "\n            ", HTML.DIV({
+    "class": "controls"                                                                                              // 31
+  }, "\n                ", HTML.INPUT({                                                                              // 32
+    name: "title",                                                                                                   // 33
+    id: "title",                                                                                                     // 34
+    type: "text",                                                                                                    // 35
+    value: function() {                                                                                              // 36
+      return Spacebars.mustache(view.lookup("title"));                                                               // 37
+    },                                                                                                               // 38
+    placeholder: "Name your post",                                                                                   // 39
+    "class": "form-control"                                                                                          // 40
+  }), "\n                ", HTML.SPAN({                                                                              // 41
+    "class": "help-block"                                                                                            // 42
+  }, Blaze.View("lookup:errorMessage", function() {                                                                  // 43
+    return Spacebars.mustache(view.lookup("errorMessage"), "title");                                                 // 44
+  })), "\n            "), "\n        "), HTML.Raw('\n        <input type="submit" value="Submit" class="btn btn-primary submit">\n        <hr>\n        <a class="btn btn-danger delete" href="#">Delete post</a>\n    '));
+}));                                                                                                                 // 46
+                                                                                                                     // 47
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+},"template.post_item.js":function(){
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                   //
+// client/templates/posts/template.post_item.js                                                                      //
+//                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                     //
+                                                                                                                     // 1
+Template.__checkName("postItem");                                                                                    // 2
+Template["postItem"] = new Template("Template.postItem", (function() {                                               // 3
+  var view = this;                                                                                                   // 4
+  return HTML.DIV({                                                                                                  // 5
+    "class": "post"                                                                                                  // 6
+  }, "\n    ", HTML.A({                                                                                              // 7
+    href: "#",                                                                                                       // 8
+    "class": function() {                                                                                            // 9
+      return [ "upvote btn btn-default ", Spacebars.mustache(view.lookup("upvotedClass")) ];                         // 10
+    }                                                                                                                // 11
+  }, "⬆"), "\n    ", HTML.DIV({                                                                                      // 12
+    "class": "post-content"                                                                                          // 13
+  }, "\n        ", HTML.H3(HTML.A({                                                                                  // 14
+    href: function() {                                                                                               // 15
+      return Spacebars.mustache(view.lookup("url"));                                                                 // 16
+    }                                                                                                                // 17
+  }, Blaze.View("lookup:title", function() {                                                                         // 18
+    return Spacebars.mustache(view.lookup("title"));                                                                 // 19
+  })), HTML.SPAN(Blaze.View("lookup:domain", function() {                                                            // 20
+    return Spacebars.mustache(view.lookup("domain"));                                                                // 21
+  }))), "\n        ", HTML.P("\n            ", Blaze.View("lookup:pluralize", function() {                           // 22
+    return Spacebars.mustache(view.lookup("pluralize"), view.lookup("votes"), "Vote");                               // 23
+  }), ",\n            submitted by ", Blaze.View("lookup:author", function() {                                       // 24
+    return Spacebars.mustache(view.lookup("author"));                                                                // 25
+  }), ",\n            ", HTML.A({                                                                                    // 26
+    href: function() {                                                                                               // 27
+      return Spacebars.mustache(view.lookup("pathFor"), "postPage");                                                 // 28
+    }                                                                                                                // 29
+  }, Blaze.View("lookup:pluralize", function() {                                                                     // 30
+    return Spacebars.mustache(view.lookup("pluralize"), view.lookup("commentsCount"), "comment");                    // 31
+  })), "\n            ", Blaze.If(function() {                                                                       // 32
+    return Spacebars.call(view.lookup("ownPost"));                                                                   // 33
+  }, function() {                                                                                                    // 34
+    return HTML.A({                                                                                                  // 35
+      href: function() {                                                                                             // 36
+        return Spacebars.mustache(view.lookup("pathFor"), "postEdit");                                               // 37
+      }                                                                                                              // 38
+    }, "Edit");                                                                                                      // 39
+  }), "\n        "), "\n    "), "\n    ", HTML.A({                                                                   // 40
+    href: function() {                                                                                               // 41
+      return Spacebars.mustache(view.lookup("pathFor"), "postPage");                                                 // 42
+    },                                                                                                               // 43
+    "class": "discuss btn btn-default"                                                                               // 44
+  }, "Discuss"), "\n");                                                                                              // 45
+}));                                                                                                                 // 46
+                                                                                                                     // 47
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+},"template.post_list.js":function(){
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                   //
+// client/templates/posts/template.post_list.js                                                                      //
+//                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                     //
+                                                                                                                     // 1
+Template.__checkName("postsList");                                                                                   // 2
+Template["postsList"] = new Template("Template.postsList", (function() {                                             // 3
+  var view = this;                                                                                                   // 4
+  return HTML.DIV({                                                                                                  // 5
+    "class": "posts"                                                                                                 // 6
+  }, "\n      ", HTML.DIV({                                                                                          // 7
+    "class": "wrapper"                                                                                               // 8
+  }, "\n          ", Blaze.Each(function() {                                                                         // 9
+    return Spacebars.call(view.lookup("posts"));                                                                     // 10
+  }, function() {                                                                                                    // 11
+    return [ "\n              ", Spacebars.include(view.lookupTemplate("postItem")), "\n          " ];               // 12
+  }), "\n      "), "\n      ", Blaze.If(function() {                                                                 // 13
+    return Spacebars.call(view.lookup("nextPath"));                                                                  // 14
+  }, function() {                                                                                                    // 15
+    return [ "\n          ", HTML.A({                                                                                // 16
+      "class": "load-more",                                                                                          // 17
+      href: function() {                                                                                             // 18
+        return Spacebars.mustache(view.lookup("nextPath"));                                                          // 19
+      }                                                                                                              // 20
+    }, "Load more"), "\n          " ];                                                                               // 21
+  }, function() {                                                                                                    // 22
+    return [ "\n          ", HTML.P({                                                                                // 23
+      "class": "bg-info"                                                                                             // 24
+    }, "没有更多了·····"), "\n\n      " ];                                                                                // 25
+  }), "\n  ");                                                                                                       // 26
+}));                                                                                                                 // 27
+                                                                                                                     // 28
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+},"template.post_page.js":function(){
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                   //
+// client/templates/posts/template.post_page.js                                                                      //
+//                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                     //
+                                                                                                                     // 1
+Template.__checkName("postPage");                                                                                    // 2
+Template["postPage"] = new Template("Template.postPage", (function() {                                               // 3
+  var view = this;                                                                                                   // 4
+  return [ Spacebars.include(view.lookupTemplate("postItem")), "\n    ", HTML.UL({                                   // 5
+    "class": "comments"                                                                                              // 6
+  }, "\n        ", Blaze.Each(function() {                                                                           // 7
+    return Spacebars.call(view.lookup("comments"));                                                                  // 8
+  }, function() {                                                                                                    // 9
+    return [ "\n            ", Spacebars.include(view.lookupTemplate("commentItem")), "\n        " ];                // 10
+  }), "\n    "), "\n    ", Blaze.If(function() {                                                                     // 11
+    return Spacebars.call(view.lookup("currentUser"));                                                               // 12
+  }, function() {                                                                                                    // 13
+    return [ "\n        ", Spacebars.include(view.lookupTemplate("commentSubmit")), "\n    " ];                      // 14
+  }, function() {                                                                                                    // 15
+    return [ "\n        ", HTML.P("Please log in to leave a comment."), "\n    " ];                                  // 16
+  }) ];                                                                                                              // 17
+}));                                                                                                                 // 18
+                                                                                                                     // 19
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+},"template.post_submit.js":function(){
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                   //
+// client/templates/posts/template.post_submit.js                                                                    //
+//                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                     //
+                                                                                                                     // 1
+Template.__checkName("postSubmit");                                                                                  // 2
+Template["postSubmit"] = new Template("Template.postSubmit", (function() {                                           // 3
+  var view = this;                                                                                                   // 4
+  return HTML.FORM({                                                                                                 // 5
+    "class": "main form"                                                                                             // 6
+  }, "\n        ", HTML.DIV({                                                                                        // 7
+    "class": function() {                                                                                            // 8
+      return [ "form-group ", Spacebars.mustache(view.lookup("errorClass"), "url") ];                                // 9
+    }                                                                                                                // 10
+  }, "\n            ", HTML.Raw('<label class="control-label" for="url">URL</label>'), "\n            ", HTML.DIV({  // 11
+    "class": "controls"                                                                                              // 12
+  }, "\n                ", HTML.Raw('<input name="url" id="url" type="text" value="" placeholder="Your URL" class="form-control">'), "\n                ", HTML.SPAN({
+    "class": "help-block"                                                                                            // 14
+  }, Blaze.View("lookup:errorMessage", function() {                                                                  // 15
+    return Spacebars.mustache(view.lookup("errorMessage"), "url");                                                   // 16
+  })), "\n            "), "\n        "), "\n        ", HTML.DIV({                                                    // 17
+    "class": function() {                                                                                            // 18
+      return [ "form-group ", Spacebars.mustache(view.lookup("errorClass"), "title") ];                              // 19
+    }                                                                                                                // 20
+  }, "\n            ", HTML.Raw('<label class="control-label" for="title">Title</label>'), "\n            ", HTML.DIV({
+    "class": "controls"                                                                                              // 22
+  }, "\n                ", HTML.Raw('<input name="title" id="title" type="text" value="" placeholder="Name your post" class="form-control">'), "\n                ", HTML.SPAN({
+    "class": "help-block"                                                                                            // 24
+  }, Blaze.View("lookup:errorMessage", function() {                                                                  // 25
+    return Spacebars.mustache(view.lookup("errorMessage"), "title");                                                 // 26
+  })), "\n            "), "\n        "), HTML.Raw('\n        <input type="submit" value="Submit" class="btn btn-primary">\n    '));
+}));                                                                                                                 // 28
+                                                                                                                     // 29
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+},"post_edit.js":function(){
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                   //
+// client/templates/posts/post_edit.js                                                                               //
+//                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                     //
+Template.postEdit.onCreated(function () {                                                                            // 1
+    Session.set('postEditErrors', {});                                                                               // 2
+});                                                                                                                  //
+Template.postEdit.helpers({                                                                                          // 4
+    errorMessage: function () {                                                                                      // 5
+        function errorMessage(field) {                                                                               // 5
+            return Session.get('postEditErrors')[field];                                                             // 6
+        }                                                                                                            //
+                                                                                                                     //
+        return errorMessage;                                                                                         //
+    }(),                                                                                                             //
+    errorClass: function () {                                                                                        // 8
+        function errorClass(field) {                                                                                 // 8
+            return !!Session.get('postEditErrors')[field] ? 'has-error' : '';                                        // 9
+        }                                                                                                            //
+                                                                                                                     //
+        return errorClass;                                                                                           //
+    }()                                                                                                              //
+});                                                                                                                  //
+                                                                                                                     //
+Template.postEdit.events({                                                                                           // 13
+    'submit form': function () {                                                                                     // 14
+        function submitForm(e) {                                                                                     // 14
+            e.preventDefault();                                                                                      // 15
+                                                                                                                     //
+            var currentPostId = this._id;                                                                            // 17
+                                                                                                                     //
+            var postProperties = {                                                                                   // 19
+                url: $(e.target).find('[name=url]').val(),                                                           // 20
+                title: $(e.target).find('[name=title]').val()                                                        // 21
+            };                                                                                                       //
+                                                                                                                     //
+            var errors = validatePost(postProperties);                                                               // 24
+            if (errors.title || errors.url) return Session.set('postEditErrors', errors);                            // 25
+                                                                                                                     //
+            Posts.update(currentPostId, { $set: postProperties }, function (error) {                                 // 28
+                if (error) {                                                                                         // 29
+                    // 向用户显示错误消息                                                                                     //
+                    throwError(error.reason);                                                                        // 31
+                } else {                                                                                             //
+                    Router.go('postPage', { _id: currentPostId });                                                   // 33
+                }                                                                                                    //
+            });                                                                                                      //
+        }                                                                                                            //
+                                                                                                                     //
+        return submitForm;                                                                                           //
+    }(),                                                                                                             //
+                                                                                                                     //
+    'click .delete': function () {                                                                                   // 38
+        function clickDelete(e) {                                                                                    // 38
+            e.preventDefault();                                                                                      // 39
+                                                                                                                     //
+            if (confirm("Delete this post?")) {                                                                      // 41
+                var currentPostId = this._id;                                                                        // 42
+                Posts.remove(currentPostId);                                                                         // 43
+                Router.go('home');                                                                                   // 44
+            }                                                                                                        //
+        }                                                                                                            //
+                                                                                                                     //
+        return clickDelete;                                                                                          //
+    }()                                                                                                              //
+});                                                                                                                  //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+},"post_item.js":function(){
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                   //
+// client/templates/posts/post_item.js                                                                               //
+//                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                     //
+Template.postItem.helpers({                                                                                          // 1
+  ownPost: function () {                                                                                             // 2
+    function ownPost() {                                                                                             // 2
+      return this.userId === Meteor.userId();                                                                        // 3
+    }                                                                                                                //
+                                                                                                                     //
+    return ownPost;                                                                                                  //
+  }(),                                                                                                               //
+  domain: function () {                                                                                              // 5
+    function domain() {                                                                                              // 5
+      var a = document.createElement('a');                                                                           // 6
+      a.href = this.url; //this 是模版each的遍历对象                                                                         // 7
+      return a.hostname;                                                                                             // 5
+    }                                                                                                                //
+                                                                                                                     //
+    return domain;                                                                                                   //
+  }(),                                                                                                               //
+  commentsCount: function () {                                                                                       // 10
+    function commentsCount() {                                                                                       // 10
+      return Comments.find({ postId: this._id }).count();                                                            // 11
+    }                                                                                                                //
+                                                                                                                     //
+    return commentsCount;                                                                                            //
+  }(),                                                                                                               //
+  upvotedClass: function () {                                                                                        // 13
+    function upvotedClass() {                                                                                        // 13
+      var userId = Meteor.userId();                                                                                  // 14
+      if (userId && !_.include(this.upvoters, userId)) {                                                             // 15
+        return 'btn-primary upvotable';                                                                              // 16
+      } else {                                                                                                       //
+        return 'disabled';                                                                                           // 18
+      }                                                                                                              //
+    }                                                                                                                //
+                                                                                                                     //
+    return upvotedClass;                                                                                             //
+  }()                                                                                                                //
+});                                                                                                                  //
+Template.postItem.events({                                                                                           // 22
+  'click .upvotable': function () {                                                                                  // 23
+    function clickUpvotable(e) {                                                                                     // 23
+      e.preventDefault();                                                                                            // 24
+      Meteor.call('upvote', this._id);                                                                               // 25
+    }                                                                                                                //
+                                                                                                                     //
+    return clickUpvotable;                                                                                           //
+  }()                                                                                                                //
+});                                                                                                                  //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+},"post_list.js":function(){
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                   //
+// client/templates/posts/post_list.js                                                                               //
+//                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                     //
+Template.postsList.helpers({                                                                                         // 1
+    // posts: function() {                                                                                           //
+    //   return Posts.find({},{sort:{submitted:-1}});                                                                //
+    // }                                                                                                             //
+});                                                                                                                  //
+Template.postsList.onRendered(function () {                                                                          // 6
+    this.find('.wrapper')._uihooks = {                                                                               // 7
+        insertElement: function () {                                                                                 // 8
+            function insertElement(node, next) {                                                                     // 8
+                $(node).hide().insertBefore(next).fadeIn();                                                          // 9
+            }                                                                                                        //
+                                                                                                                     //
+            return insertElement;                                                                                    //
+        }(),                                                                                                         //
+        moveElement: function () {                                                                                   // 14
+            function moveElement(node, next) {                                                                       // 14
+                var $node = $(node),                                                                                 // 15
+                    $next = $(next);                                                                                 //
+                var oldTop = $node.offset().top;                                                                     // 16
+                var height = $node.outerHeight(true);                                                                // 17
+                                                                                                                     //
+                // 找出 next 与 node 之间所有的元素                                                                            //
+                var $inBetween = $next.nextUntil(node);                                                              // 14
+                if ($inBetween.length === 0) $inBetween = $node.nextUntil(next);                                     // 21
+                                                                                                                     //
+                // 把 node 放在预订位置                                                                                     //
+                $node.insertBefore(next);                                                                            // 14
+                                                                                                                     //
+                // 测量新 top 偏移坐标                                                                                      //
+                var newTop = $node.offset().top;                                                                     // 14
+                                                                                                                     //
+                // 将 node *移回*至原始所在位置                                                                                //
+                $node.removeClass('animate').css('top', oldTop - newTop);                                            // 14
+                                                                                                                     //
+                // push every other element down (or up) to put them back                                            //
+                $inBetween.removeClass('animate').css('top', oldTop < newTop ? height : -1 * height);                // 14
+                                                                                                                     //
+                // 强制重绘                                                                                              //
+                $node.offset();                                                                                      // 14
+                                                                                                                     //
+                // 动画，重置所有元素的 top 坐标为 0                                                                              //
+                $node.addClass('animate').css('top', 0);                                                             // 14
+                $inBetween.addClass('animate').css('top', 0);                                                        // 45
+            }                                                                                                        //
+                                                                                                                     //
+            return moveElement;                                                                                      //
+        }(), removeElement: function () {                                                                            //
+            function removeElement(node) {                                                                           // 46
+                $(node).fadeOut(function () {                                                                        // 47
+                    $(this).remove();                                                                                // 48
+                });                                                                                                  //
+            }                                                                                                        //
+                                                                                                                     //
+            return removeElement;                                                                                    //
+        }()                                                                                                          //
+    };                                                                                                               //
+});                                                                                                                  //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+},"post_page.js":function(){
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                   //
+// client/templates/posts/post_page.js                                                                               //
+//                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                     //
+/**                                                                                                                  //
+ * Created by Administrator on 2016-06-12.                                                                           //
+ */                                                                                                                  //
+Template.postPage.helpers({                                                                                          // 4
+    comments: function () {                                                                                          // 5
+        function comments() {                                                                                        // 5
+            return Comments.find({ postId: this._id });                                                              // 6
+        }                                                                                                            //
+                                                                                                                     //
+        return comments;                                                                                             //
+    }()                                                                                                              //
+});                                                                                                                  //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+},"post_submit.js":function(){
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                   //
+// client/templates/posts/post_submit.js                                                                             //
+//                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                     //
+/**                                                                                                                  //
+ * Created by Administrator on 2016-06-10.                                                                           //
+ */                                                                                                                  //
+Template.postSubmit.onCreated(function () {                                                                          // 4
+    Session.set('postSubmitErrors', {});                                                                             // 5
+});                                                                                                                  //
+Template.postSubmit.helpers({                                                                                        // 7
+    errorMessage: function () {                                                                                      // 8
+        function errorMessage(field) {                                                                               // 8
+            return Session.get('postSubmitErrors')[field];                                                           // 9
+        }                                                                                                            //
+                                                                                                                     //
+        return errorMessage;                                                                                         //
+    }(),                                                                                                             //
+    errorClass: function () {                                                                                        // 11
+        function errorClass(field) {                                                                                 // 11
+            return !!Session.get('postSubmitErrors')[field] ? 'has-error' : '';                                      // 12
+        }                                                                                                            //
+                                                                                                                     //
+        return errorClass;                                                                                           //
+    }()                                                                                                              //
+});                                                                                                                  //
+Template.postSubmit.events({                                                                                         // 15
+    'submit form': function () {                                                                                     // 16
+        function submitForm(e) {                                                                                     // 16
+            e.preventDefault();                                                                                      // 17
+                                                                                                                     //
+            var post = {                                                                                             // 19
+                url: $(e.target).find('[name=url]').val(),                                                           // 20
+                title: $(e.target).find('[name=title]').val()                                                        // 21
+            };                                                                                                       //
+            var errors = validatePost(post);                                                                         // 23
+            if (errors.title || errors.url) return Session.set('postSubmitErrors', errors);                          // 24
+            Meteor.call('postInsert', post, function (error, result) {                                               // 26
+                // 显示错误信息并退出                                                                                         //
+                if (error) return throwError(error.reason);                                                          // 28
+                // 显示结果，跳转页面                                                                                         //
+                if (result.postExists) return throwError('链接已存在');;                                                  // 26
+                Router.go('postPage', { _id: result._id });                                                          // 33
+            });                                                                                                      //
+        }                                                                                                            //
+                                                                                                                     //
+        return submitForm;                                                                                           //
+    }()                                                                                                              //
+});                                                                                                                  //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+}}},"helpers":{"config.js":function(){
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                   //
+// client/helpers/config.js                                                                                          //
+//                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                     //
+/**                                                                                                                  //
+ * Created by Administrator on 2016-06-10.                                                                           //
+ */                                                                                                                  //
+//通过用户名注册或者登录                                                                                                        //
+Accounts.ui.config({                                                                                                 // 5
+  passwordSignupFields: 'USERNAME_ONLY'                                                                              // 6
+});                                                                                                                  //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+},"errors.js":function(){
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                   //
+// client/helpers/errors.js                                                                                          //
+//                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                     //
+/**                                                                                                                  //
+ * Created by Administrator on 2016-06-12.                                                                           //
+ */                                                                                                                  //
+Errors = new Mongo.Collection(null);                                                                                 // 4
+throwError = function throwError(message) {                                                                          // 5
+  Errors.insert({ message: message });                                                                               // 6
+};                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+},"spacebars.js":function(){
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                   //
+// client/helpers/spacebars.js                                                                                       //
+//                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                     //
+UI.registerHelper('pluralize', function (n, thing) {                                                                 // 1
+    // fairly stupid pluralizer                                                                                      //
+    if (n === 1) {                                                                                                   // 3
+        return '1 ' + thing;                                                                                         // 4
+    } else {                                                                                                         //
+        return n + ' ' + thing + 's';                                                                                // 6
+    }                                                                                                                //
+});                                                                                                                  //
+/**                                                                                                                  //
+ * Created by Administrator on 2016-06-12.                                                                           //
+ */                                                                                                                  //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+}},"main.js":function(){
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                   //
+// client/main.js                                                                                                    //
+//                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                     //
+//Meteor.subscribe('posts');                                                                                         //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+}},"lib":{"comments.js":function(){
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                   //
+// lib/comments.js                                                                                                   //
+//                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                     //
+/**                                                                                                                  //
+ * Created by Administrator on 2016-06-12.                                                                           //
+ */                                                                                                                  //
+Comments = new Mongo.Collection('comments');                                                                         // 4
+Meteor.methods({                                                                                                     // 5
+    commentInsert: function () {                                                                                     // 6
+        function commentInsert(commentAttributes) {                                                                  // 6
+            check(this.userId, String);                                                                              // 7
+            check(commentAttributes, {                                                                               // 8
+                postId: String,                                                                                      // 9
+                body: String                                                                                         // 10
+            });                                                                                                      //
+            var user = Meteor.user();                                                                                // 12
+            var post = Posts.findOne(commentAttributes.postId);                                                      // 13
+            if (!post) throw new Meteor.Error('invalid-comment', 'You must comment on a post');                      // 14
+            comment = _.extend(commentAttributes, {                                                                  // 16
+                userId: user._id,                                                                                    // 17
+                author: user.username,                                                                               // 18
+                submitted: new Date()                                                                                // 19
+            });                                                                                                      //
+            // 更新帖子的评论数                                                                                              //
+            Posts.update(comment.postId, { $inc: { commentsCount: 1 } });                                            // 6
+            // return Comments.insert(comment);                                                                      //
+            // create the comment, save the id                                                                       //
+            comment._id = Comments.insert(comment);                                                                  // 6
+            // now create a notification, informing the user that there's been a comment                             //
+            createCommentNotification(comment);                                                                      // 6
+            return comment._id;                                                                                      // 28
+        }                                                                                                            //
+                                                                                                                     //
+        return commentInsert;                                                                                        //
+    }()                                                                                                              //
+});                                                                                                                  //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+},"notifications.js":function(){
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                   //
+// lib/notifications.js                                                                                              //
+//                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                     //
+/**                                                                                                                  //
+ * Created by Administrator on 2016-06-12.                                                                           //
+ */                                                                                                                  //
+Notifications = new Mongo.Collection('notifications');                                                               // 4
+                                                                                                                     //
+Notifications.allow({                                                                                                // 6
+    update: function () {                                                                                            // 7
+        function update(userId, doc, fieldNames) {                                                                   // 7
+            return ownsDocument(userId, doc) && fieldNames.length === 1 && fieldNames[0] === 'read';                 // 8
+        }                                                                                                            //
+                                                                                                                     //
+        return update;                                                                                               //
+    }()                                                                                                              //
+});                                                                                                                  //
+                                                                                                                     //
+createCommentNotification = function createCommentNotification(comment) {                                            // 13
+    var post = Posts.findOne(comment.postId);                                                                        // 14
+    if (comment.userId !== post.userId) {                                                                            // 15
+        Notifications.insert({                                                                                       // 16
+            userId: post.userId,                                                                                     // 17
+            postId: post._id,                                                                                        // 18
+            commentId: comment._id,                                                                                  // 19
+            commenterName: comment.author,                                                                           // 20
+            read: false                                                                                              // 21
+        });                                                                                                          //
+    }                                                                                                                //
+};                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+},"permissions.js":function(){
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                   //
+// lib/permissions.js                                                                                                //
+//                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                     //
+/**                                                                                                                  //
+ * Created by Administrator on 2016-06-12.                                                                           //
+ */                                                                                                                  //
+ownsDocument = function ownsDocument(userId, doc) {                                                                  // 4
+  return doc && doc.userId === userId;                                                                               // 5
+};                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+},"router.js":function(){
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                   //
+// lib/router.js                                                                                                     //
+//                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                     //
+Router.configure({                                                                                                   // 1
+  layoutTemplate: 'layout',                                                                                          // 2
+  loadingTemplate: 'loading',                                                                                        // 3
+  notFoundTemplate: 'notFound',                                                                                      // 4
+  waitOn: function () {                                                                                              // 5
+    function waitOn() {                                                                                              // 5
+      return [Meteor.subscribe('notifications')];                                                                    // 6
+    }                                                                                                                //
+                                                                                                                     //
+    return waitOn;                                                                                                   //
+  }()                                                                                                                //
+});                                                                                                                  //
+PostsListController = RouteController.extend({                                                                       // 9
+  template: 'postsList',                                                                                             // 10
+  increment: 5,                                                                                                      // 11
+  postsLimit: function () {                                                                                          // 12
+    function postsLimit() {                                                                                          // 12
+      return parseInt(this.params.postsLimit) || this.increment;                                                     // 13
+    }                                                                                                                //
+                                                                                                                     //
+    return postsLimit;                                                                                               //
+  }(),                                                                                                               //
+  findOptions: function () {                                                                                         // 15
+    function findOptions() {                                                                                         // 15
+      return { sort: this.sort, limit: this.postsLimit() };                                                          // 16
+    }                                                                                                                //
+                                                                                                                     //
+    return findOptions;                                                                                              //
+  }(),                                                                                                               //
+  subscriptions: function () {                                                                                       // 18
+    function subscriptions() {                                                                                       // 18
+      this.postsSub = Meteor.subscribe('posts', this.findOptions());                                                 // 19
+    }                                                                                                                //
+                                                                                                                     //
+    return subscriptions;                                                                                            //
+  }(),                                                                                                               //
+  posts: function () {                                                                                               // 21
+    function posts() {                                                                                               // 21
+      return Posts.find({}, this.findOptions());                                                                     // 22
+    }                                                                                                                //
+                                                                                                                     //
+    return posts;                                                                                                    //
+  }(),                                                                                                               //
+  data: function () {                                                                                                // 24
+    function data() {                                                                                                // 24
+      var hasMore = this.posts().count() === this.postsLimit();                                                      // 25
+      return {                                                                                                       // 26
+        posts: this.posts(),                                                                                         // 27
+        ready: this.postsSub.ready,                                                                                  // 28
+        nextPath: hasMore ? this.nextPath() : null                                                                   // 29
+      };                                                                                                             //
+    }                                                                                                                //
+                                                                                                                     //
+    return data;                                                                                                     //
+  }()                                                                                                                //
+});                                                                                                                  //
+NewPostsController = PostsListController.extend({                                                                    // 33
+  sort: { submitted: -1, _id: -1 },                                                                                  // 34
+  nextPath: function () {                                                                                            // 35
+    function nextPath() {                                                                                            // 35
+      return Router.routes.newPosts.path({ postsLimit: this.postsLimit() + this.increment });                        // 36
+    }                                                                                                                //
+                                                                                                                     //
+    return nextPath;                                                                                                 //
+  }()                                                                                                                //
+});                                                                                                                  //
+BestPostsController = PostsListController.extend({                                                                   // 39
+  sort: { votes: -1, submitted: -1, _id: -1 },                                                                       // 40
+  nextPath: function () {                                                                                            // 41
+    function nextPath() {                                                                                            // 41
+      return Router.routes.bestPosts.path({ postsLimit: this.postsLimit() + this.increment });                       // 42
+    }                                                                                                                //
+                                                                                                                     //
+    return nextPath;                                                                                                 //
+  }()                                                                                                                //
+});                                                                                                                  //
+Router.route('/', {                                                                                                  // 45
+  name: 'home',                                                                                                      // 46
+  controller: NewPostsController                                                                                     // 47
+});                                                                                                                  //
+Router.route('/new/:postsLimit?', { name: 'newPosts' });                                                             // 49
+Router.route('/best/:postsLimit?', { name: 'bestPosts' });                                                           // 50
+Router.route('/posts/:_id', {                                                                                        // 51
+  name: 'postPage',                                                                                                  // 52
+  waitOn: function () {                                                                                              // 53
+    function waitOn() {                                                                                              // 53
+      return [Meteor.subscribe('singlePost', this.params._id), Meteor.subscribe('comments', this.params._id)];       // 54
+    }                                                                                                                //
+                                                                                                                     //
+    return waitOn;                                                                                                   //
+  }(),                                                                                                               //
+  data: function () {                                                                                                // 59
+    function data() {                                                                                                // 59
+      return Posts.findOne(this.params._id);                                                                         // 59
+    }                                                                                                                //
+                                                                                                                     //
+    return data;                                                                                                     //
+  }()                                                                                                                //
+});                                                                                                                  //
+                                                                                                                     //
+Router.route('/posts/:_id/edit', {                                                                                   // 62
+  name: 'postEdit',                                                                                                  // 63
+  waitOn: function () {                                                                                              // 64
+    function waitOn() {                                                                                              // 64
+      return Meteor.subscribe('singlePost', this.params._id);                                                        // 65
+    }                                                                                                                //
+                                                                                                                     //
+    return waitOn;                                                                                                   //
+  }(),                                                                                                               //
+  data: function () {                                                                                                // 67
+    function data() {                                                                                                // 67
+      return Posts.findOne(this.params._id);                                                                         // 67
+    }                                                                                                                //
+                                                                                                                     //
+    return data;                                                                                                     //
+  }()                                                                                                                //
+});                                                                                                                  //
+                                                                                                                     //
+Router.route('/submit', { name: 'postSubmit' });                                                                     // 70
+                                                                                                                     //
+Router.route('/:postsLimit?', {                                                                                      // 72
+  name: 'postsList'                                                                                                  // 73
+});                                                                                                                  //
+                                                                                                                     //
+var requireLogin = function requireLogin() {                                                                         // 76
+  if (!Meteor.user()) {                                                                                              // 77
+    if (Meteor.loggingIn()) {                                                                                        // 78
+      this.render(this.loadingTemplate);                                                                             // 79
+    } else {                                                                                                         //
+      this.render('accessDenied');                                                                                   // 81
+    }                                                                                                                //
+  } else {                                                                                                           //
+    this.next();                                                                                                     // 84
+  }                                                                                                                  //
+};                                                                                                                   //
+                                                                                                                     //
+Router.onBeforeAction('dataNotFound', { only: 'postPage' });                                                         // 88
+Router.onBeforeAction(requireLogin, { only: 'postSubmit' });                                                         // 89
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+}},"collections":{"posts.js":function(){
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                   //
+// collections/posts.js                                                                                              //
+//                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                     //
+Posts = new Mongo.Collection('posts');                                                                               // 1
+validatePost = function validatePost(post) {                                                                         // 2
+    var errors = {};                                                                                                 // 3
+    if (!post.title) errors.title = "请填写标题";                                                                         // 4
+    if (!post.url) errors.url = "请填写 URL";                                                                           // 6
+    return errors;                                                                                                   // 8
+};                                                                                                                   //
+/*允许用户编辑*/                                                                                                           //
+Posts.allow({                                                                                                        // 11
+    update: function () {                                                                                            // 12
+        function update(userId, post) {                                                                              // 12
+            return ownsDocument(userId, post);                                                                       // 12
+        }                                                                                                            //
+                                                                                                                     //
+        return update;                                                                                               //
+    }(),                                                                                                             //
+    remove: function () {                                                                                            // 13
+        function remove(userId, post) {                                                                              // 13
+            return ownsDocument(userId, post);                                                                       // 13
+        }                                                                                                            //
+                                                                                                                     //
+        return remove;                                                                                               //
+    }()                                                                                                              //
+});                                                                                                                  //
+/*限制用户编辑的字段*/                                                                                                        //
+Posts.deny({                                                                                                         // 16
+    update: function () {                                                                                            // 17
+        function update(userId, post, fieldNames) {                                                                  // 17
+            // 只能更改如下两个字段：                                                                                           //
+            return _.without(fieldNames, 'url', 'title').length > 0;                                                 // 19
+        }                                                                                                            //
+                                                                                                                     //
+        return update;                                                                                               //
+    }()                                                                                                              //
+});                                                                                                                  //
+/*修改*/                                                                                                               //
+Posts.deny({                                                                                                         // 23
+    update: function () {                                                                                            // 24
+        function update(userId, post, fieldNames, modifier) {                                                        // 24
+            var errors = validatePost(modifier.$set);                                                                // 25
+            return errors.title || errors.url;                                                                       // 26
+        }                                                                                                            //
+                                                                                                                     //
+        return update;                                                                                               //
+    }()                                                                                                              //
+});                                                                                                                  //
+Meteor.methods({                                                                                                     // 29
+    postInsert: function () {                                                                                        // 30
+        function postInsert(postAttributes) {                                                                        // 30
+            check(Meteor.userId(), String);                                                                          // 31
+            check(postAttributes, {                                                                                  // 32
+                title: String,                                                                                       // 33
+                url: String                                                                                          // 34
+            });                                                                                                      //
+            /*防止用户通过控制台来插入数据*/                                                                                       //
+            var errors = validatePost(postAttributes);                                                               // 30
+            if (errors.title || errors.url) throw new Meteor.Error('invalid-post', "你必须为你的帖子填写标题和 URL");             // 38
+            /*防止重复*/                                                                                                 //
+            var postWithSameLink = Posts.findOne({ url: postAttributes.url });                                       // 30
+            if (postWithSameLink) {                                                                                  // 42
+                return {                                                                                             // 43
+                    postExists: true,                                                                                // 44
+                    _id: postWithSameLink._id                                                                        // 45
+                };                                                                                                   //
+            }                                                                                                        //
+                                                                                                                     //
+            var user = Meteor.user();                                                                                // 49
+            var post = _.extend(postAttributes, {                                                                    // 50
+                userId: user._id,                                                                                    // 51
+                author: user.username,                                                                               // 52
+                submitted: new Date(),                                                                               // 53
+                commentsCount: 0,                                                                                    // 54
+                upvoters: [],                                                                                        // 55
+                votes: 0                                                                                             // 56
+            });                                                                                                      //
+            var postId = Posts.insert(post);                                                                         // 58
+            return {                                                                                                 // 59
+                _id: postId                                                                                          // 60
+            };                                                                                                       //
+        }                                                                                                            //
+                                                                                                                     //
+        return postInsert;                                                                                           //
+    }(),                                                                                                             //
+    upvote: function () {                                                                                            // 64
+        function upvote(postId) {                                                                                    // 64
+            check(this.userId, String);                                                                              // 65
+            check(postId, String);                                                                                   // 66
+                                                                                                                     //
+            var affected = Posts.update({                                                                            // 68
+                _id: postId,                                                                                         // 69
+                upvoters: { $ne: this.userId }                                                                       // 70
+            }, {                                                                                                     //
+                $addToSet: { upvoters: this.userId },                                                                // 72
+                $inc: { votes: 1 }                                                                                   // 73
+            });                                                                                                      //
+            if (!affected) throw new Meteor.Error('invalid', "You weren't able to upvote that post");                // 75
+        }                                                                                                            //
+                                                                                                                     //
+        return upvote;                                                                                               //
+    }()                                                                                                              //
+});                                                                                                                  //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+}}},{"extensions":[".js",".json",".html",".css"]});
+require("./client/templates/application/template.layout.js");
+require("./client/templates/application/template.not_found.js");
+require("./client/templates/comments/template.comment_item.js");
+require("./client/templates/comments/template.comment_submit.js");
+require("./client/templates/includes/template.access_denied.js");
+require("./client/templates/includes/template.errors.js");
+require("./client/templates/includes/template.header.js");
+require("./client/templates/includes/template.loading.js");
+require("./client/templates/notifications/template.notifications.js");
+require("./client/templates/posts/template.post_edit.js");
+require("./client/templates/posts/template.post_item.js");
+require("./client/templates/posts/template.post_list.js");
+require("./client/templates/posts/template.post_page.js");
+require("./client/templates/posts/template.post_submit.js");
+require("./lib/comments.js");
+require("./lib/notifications.js");
+require("./lib/permissions.js");
+require("./lib/router.js");
+require("./client/templates/application/layout.js");
+require("./client/templates/comments/comment_item.js");
+require("./client/templates/comments/comment_submit.js");
+require("./client/templates/includes/errors.js");
+require("./client/templates/includes/header.js");
+require("./client/templates/notifications/notifications.js");
+require("./client/templates/posts/post_edit.js");
+require("./client/templates/posts/post_item.js");
+require("./client/templates/posts/post_list.js");
+require("./client/templates/posts/post_page.js");
+require("./client/templates/posts/post_submit.js");
+require("./client/helpers/config.js");
+require("./client/helpers/errors.js");
+require("./client/helpers/spacebars.js");
+require("./collections/posts.js");
+require("./client/main.js");
